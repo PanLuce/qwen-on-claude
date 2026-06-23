@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+*.pyo
+*.log
+.DS_Store
+
+# Runtime dirs — created on demand by ollama_client.py, not tracked
+run/
+cost-watch/
