@@ -125,7 +125,7 @@ cat <<MANUAL
 
 4. PULL the model if you haven't already:
 
-     ollama pull qwen3-coder:30b
+     ollama pull qwen2.5-coder:14b
 
 ────────────────────────────────────────────────────────────────────────────
 Installation complete. Run the manual steps above, then open a new Claude

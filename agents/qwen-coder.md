@@ -1,6 +1,6 @@
 ---
 name: qwen-coder
-description: Local-Ollama code generator. Accepts a task spec + optional context via environment, returns code text to stdout. Use this when you want to delegate bounded, mechanical code generation (boilerplate, minimal-pass implementations, pattern translations, docstring blocks) to local Qwen3-Coder-30B (MoE) instead of cloud Claude. NOT for multi-file refactors, debugging, or open-ended design work.
+description: Local-Ollama code generator. Accepts a task spec + optional context via environment, returns code text to stdout. Use this when you want to delegate bounded, mechanical code generation (boilerplate, minimal-pass implementations, pattern translations, docstring blocks) to local Qwen2.5-Coder-14B instead of cloud Claude. NOT for multi-file refactors, debugging, or open-ended design work.
 ---
 
 # qwen-coder agent

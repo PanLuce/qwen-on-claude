@@ -47,7 +47,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any
 
 OLLAMA_URL: str = os.environ.get("OLLAMA_URL", "http://localhost:11434/v1/chat/completions")
-MODEL: str = os.environ.get("OLLAMA_MODEL", "qwen3-coder:30b")
+MODEL: str = os.environ.get("OLLAMA_MODEL", "qwen2.5-coder:14b")
 
 _ACTIVE_DIR: str = os.path.expanduser("~/.claude/run/ollama-active")
 _USAGE_LOG: str = os.path.expanduser("~/.claude/cost-watch/ollama-usage.jsonl")

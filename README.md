@@ -4,7 +4,7 @@ Route bounded code-generation tasks from Claude Code to a locally-running Qwen m
 
 ## What it does
 
-When Claude Code (Opus) is about to write mechanical code — a boilerplate scaffold, a type translation, a minimal TDD green-phase implementation — this workflow intercepts and delegates to **Qwen3-Coder-30B (MoE, ~3B active)** running locally. Claude reviews the output and applies it. If Ollama is unreachable or Qwen's self-grade is below threshold, it falls back to Claude silently.
+When Claude Code (Opus) is about to write mechanical code — a boilerplate scaffold, a type translation, a minimal TDD green-phase implementation — this workflow intercepts and delegates to **Qwen2.5-Coder-14B** running locally. Claude reviews the output and applies it. If Ollama is unreachable or Qwen's self-grade is below threshold, it falls back to Claude silently.
 
 ### When Qwen handles it (GOOD-fit)
 
@@ -29,7 +29,7 @@ When Claude Code (Opus) is about to write mechanical code — a boilerplate scaf
 
 - macOS or Linux
 - [Ollama](https://ollama.com) installed and on `PATH`
-- Model pulled: `ollama pull qwen3-coder:30b`
+- Model pulled: `ollama pull qwen2.5-coder:14b`
 - Python 3.9+
 - `curl`
 - `gh` CLI (for `/code-review-local`)
@@ -93,7 +93,7 @@ Inside the `"ui"` section:
 ### 4. Pull the model
 
 ```bash
-ollama pull qwen3-coder:30b
+ollama pull qwen2.5-coder:14b
 ```
 
 ---
@@ -145,7 +145,7 @@ These are created on demand by `ollama_client.py`. You can delete them safely at
 | Variable | Default | Purpose |
 |---|---|---|
 | `OLLAMA_URL` | `http://localhost:11434/v1/chat/completions` | Override Ollama endpoint |
-| `OLLAMA_MODEL` | `qwen3-coder:30b` | Override model |
+| `OLLAMA_MODEL` | `qwen2.5-coder:14b` | Override model |
 
 ## CLAUDE.md pointer
 

@@ -1,5 +1,5 @@
 ---
-description: Code review using local Ollama model (Qwen3-Coder-30B MoE) — inline comments, cost-optimized, posts nothing if no findings above threshold. Requires Ollama running at localhost:11434.
+description: Code review using local Ollama model (Qwen2.5-Coder-14B) — inline comments, cost-optimized, posts nothing if no findings above threshold. Requires Ollama running at localhost:11434.
 argument-hint: <pr-number-or-url>
 ---
 
@@ -70,7 +70,7 @@ PR_INTENT=$(python3 - <<'PYEOF'
 import json, subprocess, tempfile, os, re
 
 payload = {
-    "model": "qwen3-coder:30b",
+    "model": "qwen2.5-coder:14b",
     "temperature": 0.0,
     "keep_alive": "30m",
     "max_tokens": 400,
@@ -149,7 +149,7 @@ findings = json.loads(os.environ["STEP5_FINDINGS"])
 diff_snippet = os.environ["PR_DIFF"][:20000]
 
 payload = {
-    "model": "qwen3-coder:30b",
+    "model": "qwen2.5-coder:14b",
     "temperature": 0.0,
     "keep_alive": "30m",
     "messages": [
@@ -234,6 +234,6 @@ This footer is the user's only window into whether the local pipeline is actuall
   `https://github.com/<owner>/<repo>/blob/<HEAD_SHA>/<path>#L<start>-L<end>`
   Provide ≥1 line of context above and below the flagged line in the range.
 - **Pipeline shape:** Opus-orchestrates → Qwen-intent → Qwen-executes-per-chunk (parallel-4) → Qwen-scores. No Haiku calls anywhere in this command.
-- **Model:** `qwen3-coder:30b` (MoE, 30B total / ~3B active) via Ollama at localhost:11434. Cold start ~24s. Warm per-chunk latency and full-PR benchmark TBD after first real run.
+- **Model:** `qwen2.5-coder:14b` via Ollama at localhost:11434. Cold start ~24s. Warm per-chunk latency and full-PR benchmark TBD after first real run.
 - **Fallback:** If Ollama unavailable after 5 start attempts, or >20% chunks fail to parse, report to user and STOP — user runs `/code-review` (Sonnet) manually.
 - **Routing rule** (enforce at Step 1, before any Ollama work): if `deletions/(additions+deletions) > 30%` or `file_count < 15`, this command is not appropriate — report to user and STOP, recommend `/code-review` instead.
