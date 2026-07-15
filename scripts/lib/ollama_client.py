@@ -46,7 +46,24 @@ import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any
 
-OLLAMA_URL: str = os.environ.get("OLLAMA_URL", "http://localhost:11434/v1/chat/completions")
+def _resolve_ollama_url() -> str:
+    """Resolve the chat-completions endpoint, honoring both env vars Ollama users set.
+
+    Precedence: explicit OLLAMA_URL (full endpoint) > OLLAMA_HOST (standard Ollama base,
+    e.g. http://localhost:11435) > default localhost:11434. Prior versions ignored
+    OLLAMA_HOST, so a non-default port silently probed the wrong endpoint.
+    """
+    explicit = os.environ.get("OLLAMA_URL")
+    if explicit:
+        return explicit
+    host = os.environ.get("OLLAMA_HOST")
+    if host:
+        base = host if host.startswith("http") else f"http://{host}"
+        return f"{base.rstrip('/')}/v1/chat/completions"
+    return "http://localhost:11434/v1/chat/completions"
+
+
+OLLAMA_URL: str = _resolve_ollama_url()
 MODEL: str = os.environ.get("OLLAMA_MODEL", "qwen2.5-coder:14b")
 
 _ACTIVE_DIR: str = os.path.expanduser("~/.claude/run/ollama-active")

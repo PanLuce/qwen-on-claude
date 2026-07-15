@@ -41,7 +41,7 @@ import os, sys, json
 sys.path.insert(0, os.path.expanduser("~/.claude/scripts"))
 from lib.ollama_client import is_available, call_ollama_graded
 
-if not is_available():
+if not is_available(autostart=True):
     print("__FALLBACK__")
     sys.exit(0)
 
