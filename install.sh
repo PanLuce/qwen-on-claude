@@ -108,10 +108,15 @@ cat <<MANUAL
    Then reload: source ~/.zshrc
 
 2. ADD PERMISSIONS to ~/.claude/settings.local.json (inside "allow" array):
+   NOTE: use the port that matches your $OLLAMA_HOST — 11434 is the default;
+   include the 11435 variants too if you run the metering setup on 11435.
 
      "Bash(curl -s http://localhost:11434/v1/chat/completions -H 'Content-Type: application/json' -d '{ *)",
      "Bash(curl -s --max-time 1 http://localhost:11434/api/tags)",
      "Bash(curl -s --max-time 0.3 http://localhost:11434/api/tags)",
+     "Bash(curl -s http://localhost:11435/v1/chat/completions -H 'Content-Type: application/json' -d '{ *)",
+     "Bash(curl -s --max-time 1 http://localhost:11435/api/tags)",
+     "Bash(curl -s --max-time 0.3 http://localhost:11435/api/tags)",
      "Bash(~/.claude/scripts/ollama-status.sh)",
      "Bash(mkdir -p ~/.claude/run/ollama-active)",
      "Bash(touch ~/.claude/run/ollama-active/test-flag)",

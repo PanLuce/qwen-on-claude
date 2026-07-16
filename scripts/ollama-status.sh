@@ -6,6 +6,20 @@
 #   Off     → dim grey ●   (Ollama unreachable)
 # Rendering of everything else is delegated to the shared default statusline.
 
+# Single source of truth for the Ollama endpoint (honors OLLAMA_HOST, default 11434).
+# Resolve through the symlink to the real repo dir so lib/ is found even when invoked
+# via ~/.claude/scripts/. Fall back to an inline default if the helper is absent — the
+# statusline must never crash over this.
+_self="${BASH_SOURCE[0]}"
+_self="$(cd "$(dirname "$_self")" && pwd)/$(basename "$_self")"
+while [ -L "$_self" ]; do _self="$(readlink "$_self")"; done
+_lib="$(cd "$(dirname "$_self")" && pwd)/lib/ollama-base.sh"
+if [ -f "$_lib" ]; then
+    source "$_lib"
+else
+    ollama_base() { local h="${OLLAMA_HOST:-http://localhost:11434}"; case "$h" in http*) ;; *) h="http://$h";; esac; printf '%s' "${h%/}"; }
+fi
+
 INPUT=$(cat)
 
 # Pileup guard: the statusline refreshes every ~1s, but under load a single run can take
@@ -46,7 +60,7 @@ fi
 
 if [ "$ACTIVE" -eq 1 ]; then
     INDICATOR='🦙⚡'
-elif curl -s --max-time 0.3 http://localhost:11434/api/tags >/dev/null 2>&1; then
+elif curl -s --max-time 0.3 "$(ollama_base)/api/tags" >/dev/null 2>&1; then
     INDICATOR='🦙'
 else
     INDICATOR=$(printf '\033[2;90m●\033[0m')

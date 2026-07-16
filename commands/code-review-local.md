@@ -32,16 +32,16 @@ If the diff is 100% noise (only `pom.xml` version bumps, `snapshots.json`, `.rel
 - POST NOTHING to GitHub
 - STOP
 
-Probe Ollama readiness:
+Probe Ollama readiness (endpoint honors `$OLLAMA_HOST`, default `http://localhost:11434`):
 ```bash
-curl -s --max-time 1 http://localhost:11434/api/tags
+curl -s --max-time 1 "${OLLAMA_HOST:-http://localhost:11434}/api/tags"
 ```
 
 If that call fails or times out, auto-start Ollama:
 ```bash
 nohup ollama serve > /tmp/ollama.log 2>&1 &
 ```
-Then poll `http://localhost:11434/api/tags` once per second for up to 5 attempts. If still unreachable after 5 attempts, fall back to `/code-review` (Sonnet via Bedrock) and report to the user: `🦙 Ollama unavailable — fell back to Sonnet`. Then STOP (let the user invoke `/code-review` normally).
+Then poll `${OLLAMA_HOST:-http://localhost:11434}/api/tags` once per second for up to 5 attempts. If still unreachable after 5 attempts, fall back to `/code-review` (Sonnet via Bedrock) and report to the user: `🦙 Ollama unavailable — fell back to Sonnet`. Then STOP (let the user invoke `/code-review` normally).
 
 ## Step 4 — CLAUDE.md inventory (Bash, NOT an agent)
 
@@ -91,8 +91,11 @@ payload = {
 with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
     json.dump(payload, f)
     path = f.name
+_ollama = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
+if not _ollama.startswith("http"):
+    _ollama = "http://" + _ollama
 result = subprocess.run(
-    ["curl", "-s", "http://localhost:11434/v1/chat/completions",
+    ["curl", "-s", _ollama.rstrip("/") + "/v1/chat/completions",
      "-H", "Content-Type: application/json", "-d", f"@{path}"],
     capture_output=True, text=True, timeout=60
 )
@@ -172,8 +175,11 @@ payload = {
 with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
     json.dump(payload, f)
     path = f.name
+_ollama = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
+if not _ollama.startswith("http"):
+    _ollama = "http://" + _ollama
 result = subprocess.run(
-    ["curl", "-s", "http://localhost:11434/v1/chat/completions",
+    ["curl", "-s", _ollama.rstrip("/") + "/v1/chat/completions",
      "-H", "Content-Type: application/json", "-d", f"@{path}"],
     capture_output=True, text=True, timeout=90
 )
