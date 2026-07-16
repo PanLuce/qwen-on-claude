@@ -77,23 +77,18 @@ Inside the `"allow"` array:
 "Bash(curl -s http://localhost:11435/v1/chat/completions -H 'Content-Type: application/json' -d '{ *)",
 "Bash(curl -s --max-time 1 http://localhost:11435/api/tags)",
 "Bash(curl -s --max-time 0.3 http://localhost:11435/api/tags)",
-"Bash(~/.claude/scripts/ollama-status.sh)",
 "Bash(mkdir -p ~/.claude/run/ollama-active)",
 "Bash(touch ~/.claude/run/ollama-active/test-flag)",
 "WebFetch(domain:ollama.com)"
 ```
 
-### 3. Add statusLine to `~/.claude/settings.json`
+> **Statusline:** the Ollama activity indicator (🦙⚡) and the rest of the
+> statusline are rendered by the separate [ai-statusline](https://github.com/PanLuce/ai-statusline)
+> project. This repo only writes the activity flags under
+> `~/.claude/run/ollama-active/` (see `scripts/lib/ollama_client.py`); it no
+> longer ships a statusline renderer.
 
-Inside the `"ui"` section:
-
-```json
-"statusLine": {
-  "command": "$HOME/.claude/scripts/ollama-status.sh"
-}
-```
-
-### 4. Pull the model
+### 3. Pull the model
 
 ```bash
 ollama pull qwen2.5-coder:14b
@@ -129,8 +124,7 @@ qwen-on-claude/
     │   ├── __init__.py
     │   └── ollama_client.py     # shared library: is_available, call_ollama, call_ollama_graded
     ├── ollama-call.sh           # bash CLI wrapper for ollama_client
-    ├── ollama-review.py         # PR-review harness (parallel chunk fan-out)
-    └── ollama-status.sh         # Claude Code statusLine renderer
+    └── ollama-review.py         # PR-review harness (parallel chunk fan-out)
 ```
 
 ## Runtime data (not in repo)

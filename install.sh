@@ -80,7 +80,6 @@ link "$REPO_DIR/scripts/lib/__init__.py"     "$CLAUDE_DIR/scripts/lib/__init__.p
 link "$REPO_DIR/scripts/lib/ollama_client.py" "$CLAUDE_DIR/scripts/lib/ollama_client.py"
 link "$REPO_DIR/scripts/ollama-call.sh"      "$CLAUDE_DIR/scripts/ollama-call.sh"
 link "$REPO_DIR/scripts/ollama-review.py"    "$CLAUDE_DIR/scripts/ollama-review.py"
-link "$REPO_DIR/scripts/ollama-status.sh"    "$CLAUDE_DIR/scripts/ollama-status.sh"
 
 # ---------------------------------------------------------------------------
 # Manual steps
@@ -117,20 +116,18 @@ cat <<MANUAL
      "Bash(curl -s http://localhost:11435/v1/chat/completions -H 'Content-Type: application/json' -d '{ *)",
      "Bash(curl -s --max-time 1 http://localhost:11435/api/tags)",
      "Bash(curl -s --max-time 0.3 http://localhost:11435/api/tags)",
-     "Bash(~/.claude/scripts/ollama-status.sh)",
      "Bash(mkdir -p ~/.claude/run/ollama-active)",
      "Bash(touch ~/.claude/run/ollama-active/test-flag)",
      "WebFetch(domain:ollama.com)"
 
-3. ADD statusLine to ~/.claude/settings.json (inside the "ui" section):
-
-     "statusLine": {
-       "command": "\$HOME/.claude/scripts/ollama-status.sh"
-     }
-
-4. PULL the model if you haven't already:
+3. PULL the model if you haven't already:
 
      ollama pull qwen2.5-coder:14b
+
+   NOTE: the Ollama activity indicator (🦙⚡) and the whole statusline are now
+   rendered by the separate ai-statusline project (~/GIT/ai-statusline). This
+   repo only produces the activity flags under ~/.claude/run/ollama-active/
+   (via scripts/lib/ollama_client.py); it no longer ships a statusLine renderer.
 
 ────────────────────────────────────────────────────────────────────────────
 Installation complete. Run the manual steps above, then open a new Claude

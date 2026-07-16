@@ -42,7 +42,6 @@ remove_if_mine "$CLAUDE_DIR/scripts/lib/__init__.py"
 remove_if_mine "$CLAUDE_DIR/scripts/lib/ollama_client.py"
 remove_if_mine "$CLAUDE_DIR/scripts/ollama-call.sh"
 remove_if_mine "$CLAUDE_DIR/scripts/ollama-review.py"
-remove_if_mine "$CLAUDE_DIR/scripts/ollama-status.sh"
 
 cat <<MANUAL
 
@@ -56,7 +55,5 @@ cat <<MANUAL
 
 3. Remove the Ollama permission entries from ~/.claude/settings.local.json
    if you no longer want them.
-
-4. Remove the statusLine entry from ~/.claude/settings.json if desired.
 
 MANUAL

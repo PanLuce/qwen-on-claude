@@ -11,7 +11,7 @@ is_available(autostart=False) -> bool
 call_ollama(system_prompt, user_content, *, temperature=0.1, timeout=120,
             skill=None) -> Any | None
     Single Ollama call.  Returns parsed JSON (any shape), plain text, or None
-    on any failure.  Writes an activity flag so ollama-status.sh shows 🦙⚡.
+    on any failure.  Writes an activity flag so the statusline shows 🦙⚡.
     Appends a row to ~/.claude/cost-watch/ollama-usage.jsonl when skill is given.
 
 call_ollama_batch(jobs, *, max_workers=4, skill=None) -> list
