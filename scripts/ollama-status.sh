@@ -66,6 +66,18 @@ else
     INDICATOR=$(printf '\033[2;90m●\033[0m')
 fi
 
+# claude-model-router glyph (opt-in): a dim 🎯tier hint when the router's recommended
+# tier disagrees with the model actually running. Pass the LIVE model in so the check
+# is honest under `opusplan` (settings.json says "opusplan"; the model in flight is Opus
+# in plan mode / Sonnet in execution). Empty when the router agrees, is stale, or absent —
+# folded into INDICATOR so both render branches pick it up. Never allowed to break the line.
+ROUTER_SEGMENT="$HOME/GIT/claude-model-router/statusline/segment.sh"
+if [ -x "$ROUTER_SEGMENT" ]; then
+    LIVE_MODEL=$(printf '%s' "$INPUT" | jq -r '.model.display_name // empty' 2>/dev/null)
+    ROUTER_GLYPH=$(CLAUDE_ROUTER_ACTIVE_MODEL="$LIVE_MODEL" "$ROUTER_SEGMENT" 2>/dev/null || true)
+    [ -n "$ROUTER_GLYPH" ] && INDICATOR="$INDICATOR $ROUTER_GLYPH"
+fi
+
 PY_STATUSLINE="/Users/lukasvitala/development/tools/core/share/utils/claude-statusline-default.py"
 if [ -x "$PY_STATUSLINE" ]; then
     OUTPUT=$(printf '%s' "$INPUT" | "$PY_STATUSLINE")
